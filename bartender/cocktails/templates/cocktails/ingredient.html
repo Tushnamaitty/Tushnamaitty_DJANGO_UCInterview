@@ -13,7 +13,7 @@
         <ul>
            {%for item in data.drinks %}
             <li>
-                <strong>Name:</strong><a href='{%url 'cocktail_detail' item.idDrink % }'> {{ item.strDrink }}</a><br>
+                <strong>Name:</strong> <a href='{%url 'cocktail_detail' item.idDrink%}'>{{ item.strDrink }}</a><br>
                 <strong>Drink id:</strong>{{item.idDrink}}<br>
                 {% if item.strDrinkThumb %}
                     <img src="{{ item.strDrinkThumb }}" alt="Cocktail Image" style="width: 100px; height: 100px;">
