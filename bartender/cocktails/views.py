@@ -7,6 +7,7 @@ def home(request):
 def Cocktail_List(request):
     error_message=None
     data=None
+    template_name='cocktails/index.html'
     if request.method=='POST':
         query=CocktailForm(request.POST)
         if query.is_valid():
@@ -14,14 +15,16 @@ def Cocktail_List(request):
             search_input=query.cleaned_data['option']
             if search_type=='name':
                 api_url=f"https://www.thecocktaildb.com/api/json/v1/1/search.php?s={search_input}"
+                template_name='cocktails/name.html'
             else:
-                api_url=f"https://www.thecocktaildb.com/api/json/v1/1/search.php?i={search_input}"    
+                api_url=f"https://www.thecocktaildb.com/api/json/v1/1/filter.php?i={search_input}"  
+                template_name='cocktails/ingredient.html' 
             try:
                 response=requests.get(api_url)
                 response.raise_for_status()
                 data=response.json()
             except requests.exceptions.RequestException as e:
-                error_message = f"API Error: {e}"
+                error_message = f"API Error: {e}"    
     else:
         query=CocktailForm()
     context = {
@@ -29,6 +32,6 @@ def Cocktail_List(request):
         'data': data,
         'error_message': error_message,
     }
-    return render(request, 'cocktails/index.html', context)
+    return render(request,template_name, context)
     
 

@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>User Info</title>
+</head>
+<body>
+    <h1>Cocktail Info:</h1>
+    {% if error_message %}
+        <p style="color: red;">{{ error_message }}</p>
+    {% endif %}
+    {% if data %}
+        <h2>Cocktail Details:</h2>
+        <ul>
+           {%for item in data.drinks %}
+            <li>
+                <strong>Name:</strong> {{ item.strDrink }}<br>
+                <strong>Drink id:</strong>{{item.idDrink}}<br>
+                {% if item.strDrinkThumb %}
+                    <img src="{{ item.strDrinkThumb }}" alt="Cocktail Image" style="width: 100px; height: 100px;">
+                {% endif %}
+            </li>
+           {% endfor %}
+        </ul>
+    {% endif %}
+</body>
+</html>

@@ -15,23 +15,5 @@
     {% if error_message %}
         <p style="color: red;">{{ error_message }}</p>
     {% endif %}
-
-    {% if data %}
-        <h2>Cocktail Details:</h2>
-        <ul>
-           {%for item in data.drinks %}
-            <li>
-                <strong>Name:</strong> {{ item.strDrink }}<br>
-                <strong>Category:</strong> {{ item.strCategory }}<br>
-                <strong>Alcoholic:</strong> {{ item.strAlcoholic }}<br>
-                <strong>Glass:</strong> {{ item.strGlass }}<br>
-                <strong>Instructions:</strong> {{ item.strInstructions }}<br>
-                {% if item.strDrinkThumb %}
-                    <img src="{{ item.strDrinkThumb }}" alt="Cocktail Image" style="width: 100px; height: 100px;">
-                {% endif %}
-            </li>
-           {% endfor %}
-        </ul>
-    {% endif %}
 </body>
 </html>
