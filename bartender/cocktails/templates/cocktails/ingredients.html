@@ -25,13 +25,13 @@
                     {{form.as_p}}
 
                     <button type="submit" class="w-full bg-sky-600 hover:bg-sky-700 text-white font-bold py-3 px-4 rounded-lg focus:outline-none focus:ring-4 focus:ring-sky-400/50 transition-transform duration-300 ease-in-out hover:scale-105">
-                        Fetch Cocktail
+                        Fetch Cocktail by Ingredient
                     </button>
                 </form>
             </div>
              <div class="text-center mt-6">
-                <a href="{% url 'ing_list' %}" class="inline-block text-sky-400 hover:text-sky-300 transition-colors">
-                    or, Search By Ingredient &rarr;
+                <a href="{% url 'cocktail_list' %}" class="inline-block text-sky-400 hover:text-sky-300 transition-colors">
+                    or, Search By Name &rarr;
                 </a>
             </div>
         </div>
