@@ -1,11 +1,6 @@
 from django.db import models
-'''
 class CocktailSearch(models.Model):
-    name = models.CharField(max_length=200,primary_key=True)
-    count = models.IntegerField(default=1)
-    class Meta:
-        ordering = ['-search_count', 'name']
-    
+    name = models.CharField(max_length=100, unique=True)
+    search_count = models.IntegerField(default=0)
     def __str__(self):
-       f" name: {self.name} has {self.count} searches" 
-# Create your models here.'''
+        return f"{self.name} ({self.search_count})"

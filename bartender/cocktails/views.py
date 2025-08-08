@@ -1,37 +1,42 @@
 from django.shortcuts import render
-
 from .forms import CocktailForm,IngridentForm,MultiForm
 import requests
-# Create your views here.
-
-
+from .models import CocktailSearch
 def cocktail_list(request):
-    data = None
+    cocktails = None
     error_message = None
-    print(request) 
-    if(request.method == 'POST'):
-        query = CocktailForm(request.POST)
-        if query.is_valid():
-            q = query.cleaned_data['name']
-            api_url = f"https://www.thecocktaildb.com/api/json/v1/1/search.php?s={q}"
+    form = CocktailForm()
+    if request.method == 'POST':
+        form = CocktailForm(request.POST)
+        if form.is_valid():
+            cocktail_name = form.cleaned_data['name']
+            cocktail_obj, created = CocktailSearch.objects.get_or_create(
+                name=cocktail_name.lower()
+            )
+            cocktail_obj.search_count += 1
+            cocktail_obj.save()
+            api_url = f'https://www.thecocktaildb.com/api/json/v1/1/search.php?s={cocktail_name}'
             try:
                 response = requests.get(api_url)
                 response.raise_for_status()
                 data = response.json()
+
+                if data.get('drinks'):
+                    cocktails = data['drinks']
+                else:
+                    error_message = f"No cocktail found with the name '{cocktail_name}'."
+
             except requests.exceptions.RequestException as e:
                 error_message = f"API Error: {e}"
-    else:
-        query = CocktailForm()
-    print(query)
+    top_searches = CocktailSearch.objects.order_by('-search_count')
     context = {
-        'form': query,
-        'data': data,
+        'form': form,
+        'cocktails': cocktails,
         'error_message': error_message,
+        'top_searches': top_searches
     }
-
-    return render(request, 'cocktails/index.html', context)
-
-
+    return render(request, "cocktails/index.html", context)
+    
 def ing_list(request):
     data = None
     error_message = None
@@ -101,13 +106,3 @@ def drink_view(request,drinkId):
     }
     return render(request,'cocktails/drinks.html',context)
 
-'''def most_searched(request):
-    if (request.method=='POST'):
-        drink=most_searched.objects.get(name=strDrink)
-        if drink==None:
-
-        object.count+=1
-        object.save()'''
-
-
-    

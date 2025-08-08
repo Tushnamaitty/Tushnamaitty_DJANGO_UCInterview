@@ -9,76 +9,76 @@
 <body class="bg-slate-900 text-slate-300 font-sans">
 
     <div class="container mx-auto p-4 sm:p-6 lg:p-8">
-        
         <div class="text-center mb-10">
             <h1 class="text-4xl sm:text-5xl font-bold text-white mb-4">
                 Cocktail Info Search
             </h1>
             <p class="text-lg text-slate-400">Find recipes and details for your favorite drinks.</p>
         </div>
-
         <div class="max-w-xl mx-auto mb-12">
             <div class="bg-slate-800 p-6 sm:p-8 rounded-xl shadow-2xl">
                 <form method="post" class="space-y-4">
                     {% csrf_token %}
-                    
-                    {{form.as_p}}
-
+                    {{ form.as_p }}
                     <button type="submit" class="w-full bg-sky-600 hover:bg-sky-700 text-white font-bold py-3 px-4 rounded-lg focus:outline-none focus:ring-4 focus:ring-sky-400/50 transition-transform duration-300 ease-in-out hover:scale-105">
                         Fetch Cocktail
                     </button>
                 </form>
             </div>
-             <div class="text-center mt-6">
-                <a href="{% url 'ing_list' %}" class="inline-block text-sky-400 hover:text-sky-300 transition-colors">
+            <div class="text-center mt-6 space-y-2">
+                <a href="{% url 'ing_list' %}" class="block text-sky-400 hover:text-sky-300 transition-colors">
                     or, Search By Ingredient &rarr;
+                </a>
+                <a href="{% url 'multiple_ingredients' %}" class="block text-sky-400 hover:text-sky-300 transition-colors">
+                    or, Search By Multiple Ingredients &rarr;
                 </a>
             </div>
         </div>
-            <div class="text-center mt-6">
-                <a href="{% url 'multiple_ingredients' %}" class="inline-block text-sky-400 hover:text-sky-300 transition-colors">
-                    or, Search By Multiple Ingredient &rarr;
-                </a>
-            </div>
-    </div>
-
-
         {% if error_message %}
-            <div class="max-w-4xl mx-auto mt-6 bg-red-900/50 border border-red-500 text-red-300 px-4 py-3 rounded-lg shadow-lg" role="alert">
-                <p class="font-bold">Couldn't Find That</p>
-                <p>{{ error_message }}</p>
-            </div>
+        <div class="max-w-4xl mx-auto mt-6 bg-red-900/50 border border-red-500 text-red-300 px-4 py-3 rounded-lg shadow-lg" role="alert">
+            <p class="font-bold">Couldn't Find That</p>
+            <p>{{ error_message }}</p>
+        </div>
         {% endif %}
-
-        {% if data and data.drinks %}
-            <div class="mt-12">
-                <h2 class="text-3xl font-bold text-white text-center mb-8">Cocktail Details</h2>
-                
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                    {% for item in data.drinks %}
-                        <a href="{% url 'drinks_detail_view' item.idDrink %}" class="block group">
-                           <div class="bg-slate-800 rounded-xl shadow-lg overflow-hidden h-full transform transition-all duration-300 ease-in-out group-hover:scale-105 group-hover:shadow-sky-500/20">
-                                
-                                <img src="{{ item.strDrinkThumb }}" alt="{{ item.strDrink }} Image" class="w-full h-56 object-cover">
-                                
-                                <div class="p-6">
-                                    <h3 class="text-2xl font-bold text-white mb-3">{{ item.strDrink }}</h3>
-                                    
-                                    <div class="flex flex-wrap gap-2 mb-4">
-                                        <span class="bg-sky-900/70 text-sky-300 text-xs font-semibold px-2.5 py-0.5 rounded-full">{{ item.strCategory }}</span>
-                                        <span class="bg-indigo-900/70 text-indigo-300 text-xs font-semibold px-2.5 py-0.5 rounded-full">{{ item.strAlcoholic }}</span>
-                                        <span class="bg-pink-900/70 text-pink-300 text-xs font-semibold px-2.5 py-0.5 rounded-full">{{ item.strGlass }}</span>
-                                    </div>
-                                    
-                                    <p class="text-slate-400 leading-relaxed text-sm line-clamp-3">
-                                        {{ item.strInstructions }}
-                                    </p>
-                                </div>
+        {% if cocktails %}
+        <div class="mt-12">
+            <h2 class="text-3xl font-bold text-white text-center mb-8">Cocktail Details</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                {% for item in cocktails %}
+                <a href="{% url 'drinks_detail_view' item.idDrink %}" class="block group">
+                    <div class="bg-slate-800 rounded-xl shadow-lg overflow-hidden h-full transform transition-all duration-300 ease-in-out group-hover:scale-105 group-hover:shadow-sky-500/20">
+                        <img src="{{ item.strDrinkThumb }}" alt="{{ item.strDrink }} Image" class="w-full h-56 object-cover">
+                        <div class="p-6">
+                            <h3 class="text-2xl font-bold text-white mb-3">{{ item.strDrink }}</h3>
+                            <div class="flex flex-wrap gap-2 mb-4">
+                                <span class="bg-sky-900/70 text-sky-300 text-xs font-semibold px-2.5 py-0.5 rounded-full">{{ item.strCategory }}</span>
+                                <span class="bg-indigo-900/70 text-indigo-300 text-xs font-semibold px-2.5 py-0.5 rounded-full">{{ item.strAlcoholic }}</span>
+                                <span class="bg-pink-900/70 text-pink-300 text-xs font-semibold px-2.5 py-0.5 rounded-full">{{ item.strGlass }}</span>
                             </div>
-                        </a> 
-                    {% endfor %}
-                </div>
+                            <p class="text-slate-400 leading-relaxed text-sm line-clamp-3">
+                                {{ item.strInstructions }}
+                            </p>
+                        </div>
+                    </div>
+                </a>
+                {% endfor %}
             </div>
+        </div>
+        {% endif %}
+        {% if top_searches %}
+        <div class="mt-16 max-w-xl mx-auto">
+            <h2 class="text-2xl font-bold text-white mb-4 text-center">Top Searched Cocktails</h2>
+            <ul class="bg-slate-800 rounded-xl shadow-lg divide-y divide-slate-700">
+                {% for search in top_searches %}
+                <li class="flex justify-between items-center p-4 hover:bg-slate-700/50 transition">
+                    <span class="capitalize font-medium">{{ search.name }}</span>
+                    <span class="text-sky-400 font-bold">{{ search.search_count }}</span>
+                </li>
+                {% empty %}
+                <li class="p-4 text-slate-500">No searches yet</li>
+                {% endfor %}
+            </ul>
+        </div>
         {% endif %}
 
     </div>
